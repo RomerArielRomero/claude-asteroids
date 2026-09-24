@@ -57,6 +57,10 @@ class Bullet {
   }
 }
 
+// ── Sprite ────────────────────────────────────────────────────────────────────
+const asteroidImg = new Image();
+asteroidImg.src = 'assets/asteroid.png';
+
 // ── Asteroid ──────────────────────────────────────────────────────────────────
 const RADII  = [0, 16, 30, 50];   // por tamaño 1, 2, 3
 const SPEEDS = [0, 85, 55, 32];   // velocidad base por tamaño
@@ -105,15 +109,20 @@ class Asteroid {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.rot);
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth   = 1.5;
-    ctx.lineJoin    = 'round';
-    ctx.beginPath();
-    ctx.moveTo(this.verts[0][0], this.verts[0][1]);
-    for (let i = 1; i < this.verts.length; i++)
-      ctx.lineTo(this.verts[i][0], this.verts[i][1]);
-    ctx.closePath();
-    ctx.stroke();
+    if (this.size === 3 && asteroidImg.complete && asteroidImg.naturalWidth > 0) {
+      const r = this.radius * 2;
+      ctx.drawImage(asteroidImg, -r, -r, r * 2, r * 2);
+    } else {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth   = 1.5;
+      ctx.lineJoin    = 'round';
+      ctx.beginPath();
+      ctx.moveTo(this.verts[0][0], this.verts[0][1]);
+      for (let i = 1; i < this.verts.length; i++)
+        ctx.lineTo(this.verts[i][0], this.verts[i][1]);
+      ctx.closePath();
+      ctx.stroke();
+    }
     ctx.restore();
   }
 }
